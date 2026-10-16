@@ -2,6 +2,7 @@
 
 Whirlpool Sixth Sense air conditioners and washer/dryer sensors for Homebridge.
 
+**Author:** Kosztyk · **Version:** 1.0.1 · **Platform:** `WhirlpoolSixthSense`
 
 This plugin ports the classic Whirlpool cloud protocol used by the supplied
 Home Assistant `whirlpool` integration and its `whirlpool-sixth-sense==0.19.1`
@@ -39,10 +40,10 @@ such as Eve or Home+; their exact presentation depends on that app.
 
 ## Install the supplied package
 
-Copy `homebridge-whirlpool-sixth-sense-1.0.0.tgz` to your Homebridge host, then:
+Copy `homebridge-whirlpool-sixth-sense-1.0.1.tgz` to your Homebridge host, then:
 
 ```bash
-sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.0.tgz
+sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.1.tgz
 sudo systemctl restart homebridge
 ```
 
@@ -113,6 +114,10 @@ settings, then add a device override:
 ]
 ```
 
+Leave `devices` empty (`[]`) for automatic discovery. An unused settings row
+without a SAID is ignored with a warning, so it cannot block account login or
+appliance discovery. Other valid rows still apply.
+
 Restart Homebridge after changing settings. Exclusions remove cached
 accessories even when the cloud is unreachable. Names keep the same accessory
 identity; a name already customized in Apple Home may still need to be changed
@@ -164,6 +169,11 @@ session tokens are included in the distributed files. The public mobile-app
 client identifiers used by the original SDK are included with their license.
 
 ## Troubleshooting
+
+**Version 1.0.0 stops with "Each device override needs its SAID":** Remove the
+unused row from Per-device settings, or set `"devices": []` in this platform
+configuration, then restart Homebridge. Version 1.0.1 fixes this by ignoring
+rows without a SAID.
 
 **No appliances:** Check the account, region, and app brand; confirm the devices
 work in the app. This version detects air conditioners by a data model

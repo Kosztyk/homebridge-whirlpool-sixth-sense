@@ -2,6 +2,9 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs/promises');
+const os = require('node:os');
+const path = require('node:path');
 const { WhirlpoolPlatform, PLUGIN_NAME, PLATFORM_NAME, parallelLimit } = require('../lib/platform');
 const { WhirlpoolDevice, descriptor, AC } = require('../lib/device');
 const { normalizeConfig } = require('../lib/config');
@@ -142,6 +145,70 @@ test('configuration rejects unsafe intervals, malformed overrides, and ambiguous
   assert.throws(() => normalizeConfig(config({ devices: [{ said: 'ONE' }, { said: 'ONE' }] })), /unique/);
   assert.throws(() => normalizeConfig(config({ enablePush: 'false' })), /true or false/);
   assert.equal(normalizeConfig(config({ brand: 'whirlpool', region: 'eu' })).region, 'EU');
+});
+
+test('blank optional device rows are skipped while valid overrides remain active', () => {
+  const warnings = [];
+  const normalized = normalizeConfig(config({ devices: [
+    {}, { exclude: false, minTemperature: 16, maxTemperature: 30 },
+    { said: '' }, { said: '   ', name: 'Unused row' }, null, 'invalid row',
+    { said: ' CUSTOM ', name: ' Bedroom AC ', exclude: true, minTemperature: 17, maxTemperature: 28 },
+  ] }), (message) => warnings.push(message));
+  assert.equal(warnings.length, 6);
+  assert(warnings.every((message) => message.includes('automatic discovery will continue')));
+  assert.deepEqual(normalized.devices, [
+    { said: 'CUSTOM', name: 'Bedroom AC', exclude: true, minTemperature: 17, maxTemperature: 28 },
+  ]);
+  assert.deepEqual(normalizeConfig(config({ devices: [{}] })).devices, []);
+});
+
+test('startup with an unused GUI row still authenticates, discovers, and registers an appliance', async (t) => {
+  const storage = await fs.mkdtemp(path.join(os.tmpdir(), 'whirlpool-startup-regression-'));
+  const bridge = api(storage);
+  const log = logger();
+  const platform = new WhirlpoolPlatform(log, config({ devices: [
+    { exclude: false, minTemperature: 16, maxTemperature: 30 },
+    { said: 'TEST-SAID', name: 'Bedroom AC' },
+  ] }), bridge);
+  t.after(async () => {
+    platform.shutdown();
+    await fs.rm(storage, { recursive: true, force: true });
+  });
+  assert(platform.client);
+  const urls = [];
+  platform.client.fetch = async (url) => {
+    urls.push(url);
+    let data;
+    if (url.endsWith('/oauth/token')) data = {
+      access_token: 'fixture-access', refresh_token: 'fixture-refresh', expires_in: 3600, accountId: '123',
+    };
+    else if (url.includes('/all/account/')) data = { '123': { home: [rawInfo()] } };
+    else if (url.includes('/share-accounts/')) return new Response('{}', { status: 404 });
+    else data = acSnapshot();
+    return new Response(JSON.stringify(data), { status: 200 });
+  };
+  await platform.start();
+  assert(urls.some((url) => url.endsWith('/oauth/token')));
+  assert(urls.some((url) => url.includes('/all/account/')));
+  assert.equal(bridge.registered.length, 1);
+  assert.equal(bridge.registered[0].displayName, 'Bedroom AC');
+  const sensor = bridge.registered[0].getServiceById(hap.Service.HeaterCooler, 'climate');
+  assert.equal(await sensor.getCharacteristic(hap.Characteristic.CurrentTemperature).handleGetRequest(), 24.5);
+  assert(log.messages.some(([level, message]) => level === 'warn' && message.includes('without a SAID')));
+  assert(!log.messages.some(([level]) => level === 'error'));
+});
+
+test('settings schema accepts empty per-device rows and defaults the list to empty', () => {
+  const Ajv = require('ajv');
+  const schema = require('../config.schema.json');
+  const ajv = new Ajv({ strict: false });
+  ajv.addFormat('email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const validate = ajv.compile(schema.schema);
+  const example = { ...require('../config.example.json'), devices: [
+    {}, { said: '' }, { exclude: false, minTemperature: 16, maxTemperature: 30 },
+  ] };
+  assert(validate(example), JSON.stringify(validate.errors));
+  assert.deepEqual(schema.schema.properties.devices.default, []);
 });
 
 test('configuration form, package metadata, and entry-point aliases agree', () => {

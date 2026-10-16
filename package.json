@@ -1,6 +1,6 @@
 {
   "name": "homebridge-whirlpool-sixth-sense",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Whirlpool Sixth Sense air conditioners and laundry sensors for Homebridge. EU/US, Maytag and KitchenAid accounts.",
   "main": "index.js",
   "type": "commonjs",
