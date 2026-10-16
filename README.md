@@ -2,13 +2,6 @@
 
 Whirlpool Sixth Sense air conditioners and washer/dryer sensors for Homebridge.
 
-**Author:** Kosztyk · **Version:** 1.0.2 · **Platform:** `WhirlpoolSixthSense`
-
-This plugin ports the classic Whirlpool cloud protocol used by the supplied
-Home Assistant `whirlpool` integration and its `whirlpool-sixth-sense==0.19.1`
-dependency to native Node.js. It connects directly to Whirlpool; a running
-Home Assistant instance and Python are not required.
-
 ## Requirements
 
 - Homebridge 1.8 or later, including Homebridge 2.x.
