@@ -1,0 +1,166 @@
+{
+  "pluginAlias": "WhirlpoolSixthSense",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Sign in with the same app account used by your Home Assistant integration. Air conditioners have native climate controls. Washers and dryers expose read-only sensors.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Platform name",
+        "type": "string",
+        "default": "Whirlpool Sixth Sense"
+      },
+      "username": {
+        "title": "App email address",
+        "type": "string",
+        "format": "email"
+      },
+      "password": {
+        "title": "App password",
+        "type": "string"
+      },
+      "region": {
+        "title": "Region",
+        "type": "string",
+        "enum": [
+          "EU",
+          "US"
+        ],
+        "default": "EU",
+        "description": "Use the same region as your Whirlpool, Maytag, or KitchenAid account."
+      },
+      "brand": {
+        "title": "App brand",
+        "type": "string",
+        "enum": [
+          "Whirlpool",
+          "Maytag",
+          "KitchenAid"
+        ],
+        "default": "Whirlpool",
+        "description": "Choose the brand of the mobile app you sign into."
+      },
+      "enablePush": {
+        "title": "Enable live cloud updates",
+        "type": "boolean",
+        "default": true
+      },
+      "exposeExtraControls": {
+        "title": "Show supported Eco, Quiet, Turbo and Display switches",
+        "type": "boolean",
+        "default": true
+      },
+      "pollInterval": {
+        "title": "Status polling interval (seconds)",
+        "type": "integer",
+        "minimum": 30,
+        "maximum": 3600,
+        "default": 60
+      },
+      "discoveryInterval": {
+        "title": "Appliance discovery interval (seconds)",
+        "type": "integer",
+        "minimum": 300,
+        "maximum": 86400,
+        "default": 900
+      },
+      "requestTimeout": {
+        "title": "Cloud request timeout (seconds)",
+        "type": "integer",
+        "minimum": 5,
+        "maximum": 30,
+        "default": 10
+      },
+      "devices": {
+        "title": "Per-device settings (optional)",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "said": {
+              "title": "Appliance SAID",
+              "type": "string",
+              "description": "The SAID printed on the appliance label or listed in its app settings."
+            },
+            "name": {
+              "title": "HomeKit name (optional)",
+              "type": "string"
+            },
+            "exclude": {
+              "title": "Exclude this appliance from HomeKit",
+              "type": "boolean",
+              "default": false
+            },
+            "minTemperature": {
+              "title": "AC minimum temperature (\u00b0C)",
+              "type": "number",
+              "minimum": 10,
+              "maximum": 30,
+              "default": 16
+            },
+            "maxTemperature": {
+              "title": "AC maximum temperature (\u00b0C)",
+              "type": "number",
+              "minimum": 16,
+              "maximum": 35,
+              "default": 30
+            }
+          },
+          "required": [
+            "said"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "debug": {
+        "title": "Enable debug logging",
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "required": [
+      "username",
+      "password",
+      "region",
+      "brand"
+    ]
+  },
+  "layout": [
+    {
+      "type": "fieldset",
+      "title": "Account",
+      "items": [
+        "name",
+        "username",
+        {
+          "key": "password",
+          "type": "password"
+        },
+        "brand",
+        "region"
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Appliances",
+      "items": [
+        "exposeExtraControls",
+        "devices"
+      ]
+    },
+    {
+      "type": "fieldset",
+      "title": "Connection",
+      "expandable": true,
+      "expanded": false,
+      "items": [
+        "enablePush",
+        "pollInterval",
+        "discoveryInterval",
+        "requestTimeout",
+        "debug"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+node_modules/
+*.tgz
+*.zip
+.DS_Store
+coverage/
+config.json
+.whirlpool*
+*.log

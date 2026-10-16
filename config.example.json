@@ -1,0 +1,15 @@
+{
+  "platform": "WhirlpoolSixthSense",
+  "name": "Whirlpool Sixth Sense",
+  "username": "you@example.com",
+  "password": "YOUR_APP_PASSWORD",
+  "region": "EU",
+  "brand": "Whirlpool",
+  "enablePush": true,
+  "exposeExtraControls": true,
+  "pollInterval": 60,
+  "discoveryInterval": 900,
+  "requestTimeout": 10,
+  "devices": [],
+  "debug": false
+}

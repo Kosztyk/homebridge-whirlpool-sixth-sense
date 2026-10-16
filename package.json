@@ -1,0 +1,65 @@
+{
+  "name": "homebridge-whirlpool-sixth-sense",
+  "version": "1.0.0",
+  "description": "Whirlpool Sixth Sense air conditioners and laundry sensors for Homebridge. EU/US, Maytag and KitchenAid accounts.",
+  "main": "index.js",
+  "type": "commonjs",
+  "keywords": [
+    "homebridge-plugin",
+    "supports-homekit",
+    "whirlpool",
+    "sixth-sense",
+    "6th-sense",
+    "maytag",
+    "kitchenaid",
+    "air-conditioner",
+    "washer",
+    "dryer",
+    "kosztyk"
+  ],
+  "author": {
+    "name": "Kosztyk",
+    "url": "https://github.com/Kosztyk"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Kosztyk/homebridge-whirlpool-sixth-sense#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kosztyk/homebridge-whirlpool-sixth-sense.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kosztyk/homebridge-whirlpool-sixth-sense/issues"
+  },
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || ^26.0.0",
+    "homebridge": ">=1.8.0 <3.0.0"
+  },
+  "peerDependencies": {
+    "homebridge": ">=1.8.0 <3.0.0"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "homebridge": "^2.4.0"
+  },
+  "scripts": {
+    "check": "node --check index.js && node --check lib/client.js && node --check lib/events.js && node --check lib/device.js && node --check lib/accessory.js && node --check lib/platform.js && node --check lib/config.js",
+    "test": "node --test test/*.test.js",
+    "prepack": "npm run check && npm test"
+  },
+  "files": [
+    "index.js",
+    "lib/",
+    "config.schema.json",
+    "config.example.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
