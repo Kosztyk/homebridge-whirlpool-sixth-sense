@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.2 — 2026-10-16
+
+- Fix Homebridge UI creating a default per-device row before the user adds one.
+- Start the optional device editor with zero rows; automatic discovery needs no SAID entry.
+- Register new accessories before any cache update, fixing missing plugin association and duplicate UUID errors.
+- Identify ACs with the air-conditioner category and a primary native HeaterCooler service with linked fan controls.
+- Correct the category of cached ACs while preserving their UUIDs and configuration.
+- Add tests using the actual settings renderer, Homebridge bridge, and persistent accessory cache.
+
 ## 1.0.1 — 2026-10-16
 
 - Fix startup stopping before login when an optional per-device row has no SAID.

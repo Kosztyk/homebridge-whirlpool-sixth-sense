@@ -1,20 +1,23 @@
-# Release validation — 1.0.1
+# Release validation — 1.0.2
 
 Date: 2026-10-16
 
-Reported failure: Homebridge loaded version 1.0.0 but stopped during configuration with "Each device override needs its SAID", before account login or appliance discovery.
+Scope:
+- Generate new Homebridge settings without an unsolicited per-device row.
+- Expose air conditioners as native AC accessories.
+- Fix new accessories entering the cache before registration.
 
-Fix: ignore optional per-device rows without a nonempty string SAID and log a row-number warning. Preserve valid overrides and their existing validation. The Homebridge settings schema now defaults the list to empty and permits unused rows.
-
+Verified results:
 - JavaScript syntax checks: passed.
-- Automated suite: 49 passed, 0 failed.
-- Regression: blank/default-only rows do not block configuration; valid names, exclusions, and temperature limits still apply.
-- Regression: startup with a blank GUI row signs in against cloud fixtures, handles shared HTTP 404, discovers an appliance, and registers its native HomeKit service.
-- Regression: the settings schema accepts an unused row and defaults devices to an empty list.
-- Existing tests cover cloud authentication/refresh, commands, native HomeKit mappings, offline errors, discovery recovery, and real local WebSocket event delivery.
-- npm pack: passed, including prepack syntax checks and the complete test suite.
-- Runtime: Node.js 24.19.0, npm 11.9.0.
+- Complete automated suite: 56 passed, 0 failed.
+- Real Homebridge UI form engine (@ng-formworks/core 21.7.0): reproduced the old default-only row, then confirmed the fixed schema creates zero rows for a new configuration and keeps an empty list empty when reopening it. Manually added valid rows retain their settings.
+- Real Homebridge 2.4.0 BridgeService: reproduced the original missing-plugin cache error and duplicate UUID with the previous implementation; the corrected registration order passes the same test.
+- Real bridge/cache tests: new discovery, later sensor additions, rediscovery, cache serialization, restoration after restart, and mixed AC/laundry discovery all passed.
+- AC identity: AIR_CONDITIONER category, primary native HeaterCooler service, and linked fan service. Legacy cached OTHER-category accessories migrate without changing UUIDs.
+- npm pack completed successfully, including all prepack checks.
+- Clean production-only tarball install: only the plugin and ws were installed. The installed package authenticated using cloud fixtures, tolerated an unused legacy settings row, registered one actual HAP accessory, serialized it to disk, and returned the expected native temperature.
+- Node.js 24.19.0, npm 11.9.0. CI also covers Node.js 22 and 26, which were not executed locally.
 
-Tests use fixtures, without real account credentials or physical appliance commands. Live account/device operation remains to be checked after the startup blocker is removed.
+No real account credentials were used in tests and no physical appliance commands were sent. Live operation should be checked after updating and restarting Homebridge.
 
-Version 1.0.1 has not been pushed to GitHub or published to npm by this patch workflow.
+Version 1.0.2 has not been pushed to GitHub or published to npm by this workflow.

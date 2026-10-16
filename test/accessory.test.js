@@ -13,6 +13,7 @@ function fixture(t, kind = 'aircon', options = {}) {
   const device = new WhirlpoolDevice(info, client);
   device.applySnapshot(kind === 'aircon' ? acSnapshot() : laundrySnapshot());
   const platform = { api: api(), log: logger(), config: config(options) };
+  platform.updateAccessory = (accessory) => platform.api.updatePlatformAccessories([accessory]);
   const accessory = new TestAccessory('Test Appliance', hap.uuid.generate('fixture'));
   const warnings = [];
   accessory.on('characteristic-warning', (warning) => warnings.push(warning));

@@ -2,7 +2,7 @@
 
 Whirlpool Sixth Sense air conditioners and washer/dryer sensors for Homebridge.
 
-**Author:** Kosztyk · **Version:** 1.0.1 · **Platform:** `WhirlpoolSixthSense`
+**Author:** Kosztyk · **Version:** 1.0.2 · **Platform:** `WhirlpoolSixthSense`
 
 This plugin ports the classic Whirlpool cloud protocol used by the supplied
 Home Assistant `whirlpool` integration and its `whirlpool-sixth-sense==0.19.1`
@@ -40,10 +40,10 @@ such as Eve or Home+; their exact presentation depends on that app.
 
 ## Install the supplied package
 
-Copy `homebridge-whirlpool-sixth-sense-1.0.1.tgz` to your Homebridge host, then:
+Copy `homebridge-whirlpool-sixth-sense-1.0.2.tgz` to your Homebridge host, then:
 
 ```bash
-sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.1.tgz
+sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.2.tgz
 sudo systemctl restart homebridge
 ```
 
@@ -114,6 +114,10 @@ settings, then add a device override:
 ]
 ```
 
+The per-device editor starts with no rows. Use its Add button only when you
+want to rename, exclude, or override limits for a specific appliance. Saving a
+new configuration does not insert a row with only default settings.
+
 Leave `devices` empty (`[]`) for automatic discovery. An unused settings row
 without a SAID is ignored with a warning, so it cannot block account login or
 appliance discovery. Other valid rows still apply.
@@ -125,6 +129,10 @@ there. Temperature overrides change HomeKit limits only; they do not expand
 what the physical appliance supports. Set limits supported by your model.
 
 ### Air-conditioner behavior
+
+Air conditioners use the native HomeKit air-conditioner category and a primary
+HeaterCooler service. Fan-only controls are linked to that climate service.
+Cached ACs are corrected without changing their accessory UUIDs.
 
 - HomeKit **Auto** sends the SDK's Sixth Sense mode (`Cavity_OpSetMode=4`).
 - Heat and Cool use the same physical setpoint. Both HomeKit threshold
@@ -170,6 +178,10 @@ client identifiers used by the original SDK are included with their license.
 
 ## Troubleshooting
 
+**Version 1.0.1 finds the appliance but reports missing associated plugin or
+duplicate UUID:** Install version 1.0.2 and restart Homebridge. This fixes the
+registration order. Existing accessory identity is preserved.
+
 **Version 1.0.0 stops with "Each device override needs its SAID":** Remove the
 unused row from Per-device settings, or set `"devices": []` in this platform
 configuration, then restart Homebridge. Version 1.0.1 fixes this by ignoring
@@ -207,8 +219,8 @@ npm test
 npm pack
 ```
 
-Tests use protocol fixtures and actual HAP services, plus a local WebSocket
-server. They do not need cloud credentials or operate live appliances. A live
+Tests use protocol fixtures, actual HAP services and Homebridge cache handlers,
+the real settings form renderer, and a local WebSocket server. They do not need cloud credentials or operate live appliances. A live
 account/appliance check is still required after installing this first release.
 
 The package metadata is prepared for:

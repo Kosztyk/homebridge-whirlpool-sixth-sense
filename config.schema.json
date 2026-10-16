@@ -107,10 +107,16 @@
               "default": 30
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "title": "Device settings"
         },
         "default": [],
-        "description": "Leave empty for automatic appliance discovery. Rows without a SAID are ignored."
+        "description": "Leave empty for automatic appliance discovery. Rows without a SAID are ignored.",
+        "minItems": 0,
+        "x-schema-form": {
+          "type": "tabarray",
+          "listItems": 0
+        }
       },
       "debug": {
         "title": "Enable debug logging",
@@ -145,7 +151,13 @@
       "title": "Appliances",
       "items": [
         "exposeExtraControls",
-        "devices"
+        {
+          "key": "devices",
+          "type": "tabarray",
+          "listItems": 0,
+          "addable": true,
+          "removable": true
+        }
       ]
     },
     {
@@ -161,5 +173,6 @@
         "debug"
       ]
     }
-  ]
+  ],
+  "fixArrays": true
 }

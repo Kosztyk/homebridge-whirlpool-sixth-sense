@@ -47,7 +47,7 @@ function session(client) {
 }
 
 class TestAccessory extends hap.Accessory {
-  constructor(name, uuid) { super(name, uuid); this.context = {}; }
+  constructor(name, uuid, category) { super(name, uuid); this.context = {}; if (category !== undefined) this.category = category; }
 }
 
 function api(storagePath = '/tmp/whirlpool-test-unused') {

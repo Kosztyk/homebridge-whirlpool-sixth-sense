@@ -1,6 +1,6 @@
 {
   "name": "homebridge-whirlpool-sixth-sense",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Whirlpool Sixth Sense air conditioners and laundry sensors for Homebridge. EU/US, Maytag and KitchenAid accounts.",
   "main": "index.js",
   "type": "commonjs",
@@ -41,8 +41,17 @@
     "ws": "^8.22.0"
   },
   "devDependencies": {
+    "@angular/common": "^22.1.4",
+    "@angular/compiler": "^22.1.4",
+    "@angular/core": "^22.1.4",
+    "@angular/forms": "^22.1.4",
+    "@angular/platform-browser": "^22.1.4",
+    "@ng-formworks/core": "^21.7.0",
     "ajv": "^8.17.1",
-    "homebridge": "^2.4.0"
+    "ajv-formats": "^3.0.1",
+    "esbuild": "^0.28.2",
+    "homebridge": "^2.4.0",
+    "lodash": "^4.17.21"
   },
   "scripts": {
     "check": "node --check index.js && node --check lib/client.js && node --check lib/events.js && node --check lib/device.js && node --check lib/accessory.js && node --check lib/platform.js && node --check lib/config.js",
