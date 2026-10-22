@@ -6,6 +6,7 @@
   "type": "commonjs",
   "keywords": [
     "homebridge-plugin",
+    "supports-hap",
     "supports-homekit",
     "whirlpool",
     "sixth-sense",
