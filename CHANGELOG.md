@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.3 — 2026-10-22
+
+- Declare HAP transport support for the Homebridge catalog.
+- Keep Homebridge in devDependencies only so installing the plugin does not install another Homebridge runtime.
+
 ## 1.0.2 — 2026-10-16
 
 - Fix Homebridge UI creating a default per-device row before the user adds one.
