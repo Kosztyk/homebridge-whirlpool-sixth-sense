@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4 — 2026-10-23
+
+- Declare Homebridge compatibility as `^1.8.0 || ^2.0.0` so the plugin catalog recognizes Homebridge v2 support.
+- Keep the supported stable Homebridge versions the same and update the package lock and installation examples.
+
 ## 1.0.3 — 2026-10-22
 
 - Declare HAP transport support for the Homebridge catalog.

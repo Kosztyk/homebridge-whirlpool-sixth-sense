@@ -33,10 +33,10 @@ such as Eve or Home+; their exact presentation depends on that app.
 
 ## Install the supplied package
 
-Copy `homebridge-whirlpool-sixth-sense-1.0.2.tgz` to your Homebridge host, then:
+Copy `homebridge-whirlpool-sixth-sense-1.0.4.tgz` to your Homebridge host, then:
 
 ```bash
-sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.2.tgz
+sudo npm install -g ./homebridge-whirlpool-sixth-sense-1.0.4.tgz
 sudo systemctl restart homebridge
 ```
 
@@ -46,10 +46,11 @@ enter your app credentials, select the correct brand and region, save, and
 restart Homebridge again. A child bridge is supported and recommended for
 keeping this cloud connection independent of other plugins.
 
-The package has not been published to npm by this project handoff. Searching
-the Homebridge plugin catalog will work after the package is published and
-indexed. The existing name `homebridge-whirlpool` belongs to another package;
-this project uses `homebridge-whirlpool-sixth-sense`.
+Published releases are available as `homebridge-whirlpool-sixth-sense` on npm.
+This supplied 1.0.4 archive can be installed locally before publication. The
+Homebridge plugin catalog reads the latest published npm release, so its v2
+readiness badge will update after 1.0.4 is published and the catalog refreshes.
+The existing name `homebridge-whirlpool` belongs to another package.
 
 ## Configuration
 

@@ -1,4 +1,24 @@
-# Release validation — 1.0.2
+# Release validation — 1.0.4
+
+Date: 2026-10-23
+
+Scope:
+- Express Homebridge compatibility as `^1.8.0 || ^2.0.0` so the catalog recognizes v2 support.
+- Bump the package and lockfile to 1.0.4 and update release and installation documentation.
+- Preserve the runtime code and previous configuration/AC fixes from 1.0.3.
+
+Verified results:
+- JavaScript syntax checks: passed.
+- Complete automated suite: 56 passed, 0 failed, including the actual settings renderer and Homebridge 2.4.0 bridge/cache tests.
+- Package and lockfile versions and engines agree.
+- The catalog's current v2 readiness check returns `Supported` for the declared Homebridge range.
+- `npm pack` completed successfully with the configured prepack checks.
+- Runtime tests ran on Node.js 24.19.0 and npm 11.9.0. Node.js 22 and 26 were not executed locally for this release.
+
+The ZIP includes the full source tree and an installable 1.0.4 npm tarball.
+No real account credentials were used in tests and no physical appliance commands were sent.
+
+## Historical validation — 1.0.2
 
 Date: 2026-10-16
 
